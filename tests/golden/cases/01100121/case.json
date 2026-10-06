@@ -1,0 +1,212 @@
+{
+  "schema_version": "1.0",
+  "case_id": "interface-01100121",
+  "title": "贷款产品查询：当前 POST 契约、本地数据聚合及知识文档校正",
+  "status": "baseline_candidate",
+  "captured_at": "2026-09-30T00:00:00+08:00",
+  "inputs": {
+    "queries": [
+      "01100121",
+      "/internal/v1/loan-products",
+      "/dfbm-fbs/v1/loan-products",
+      "queryLoanProducts"
+    ]
+  },
+  "snapshots": {
+    "dfbm": "44f59fabb2235f612fc470b49b18a0d551a9b995",
+    "dcis": "350fbdae3506f79bc1a1cf99afeb7f32680db415",
+    "fineract": "d5636847ac556c30b437254c353f05526d172b97",
+    "bank_knowledge": "f2cfbada05011c0d0f15f607feb4826d254b2526"
+  },
+  "worktree_notes": {
+    "dfbm": {
+      "clean": false,
+      "preexisting_changes": [
+        "A  .sdkmanrc",
+        " M README.md"
+      ],
+      "evidence_files_modified": false
+    },
+    "dcis": {
+      "clean": false,
+      "preexisting_changes": ["?? .sdkmanrc"]
+    },
+    "fineract": {"clean": true},
+    "bank_knowledge": {
+      "clean": false,
+      "preexisting_changes": [
+        "?? .DS_Store",
+        "?? 02_knowledge/.DS_Store",
+        "?? 02_knowledge/.obsidian/app.json",
+        "?? 02_knowledge/.obsidian/appearance.json",
+        "?? 02_knowledge/.obsidian/core-plugins.json",
+        "?? 02_knowledge/.obsidian/workspace.json"
+      ]
+    }
+  },
+  "expected_interface": {
+    "legacy_id": "01100121",
+    "protocol": "http",
+    "method": "POST",
+    "path": "/dfbm-fbs/v1/loan-products",
+    "operation_id": "queryLoanProducts",
+    "request_body": "LoanProductQueryRequest",
+    "request_field": "dfpIdList",
+    "response_schema": "LoanProductList"
+  },
+  "expected_nodes": [
+    {
+      "id": "endpoint:dfbm:queryLoanProducts",
+      "kind": "endpoint",
+      "repo_id": "dfbm",
+      "path": "dfbm-fbs/src/main/openapi/dfbm-fbs-api.yaml",
+      "start_line": 621,
+      "end_line": 644,
+      "sha256": "aa9789228604d8874f6db6dfe17d3da4afab5e4fcbed4d26f163cc8c2fe84373",
+      "must_contain": [
+        "/dfbm-fbs/v1/loan-products:",
+        "post:",
+        "operationId: queryLoanProducts",
+        "$ref: '#/components/schemas/LoanProductQueryRequest'",
+        "$ref: '#/components/schemas/LoanProductList'"
+      ]
+    },
+    {
+      "id": "method:dfbm:LoanInternalController.queryLoanProducts",
+      "kind": "method",
+      "repo_id": "dfbm",
+      "path": "dfbm-fbs/src/main/java/com/wefi/dfbm/fbs/loan/controller/LoanInternalController.java",
+      "start_line": 56,
+      "end_line": 77,
+      "sha256": "e677e2023a78798e0b2d68c65d3322de1f3f02cf78ccf3e62add6acccc8fb86d",
+      "must_contain": [
+        "queryLoanProducts(String xBizSeqNo",
+        "LoanProductQueryRequest loanProductQueryRequest",
+        "productQueryService.queryLoanProducts(query)",
+        "ResponseEntity.ok(result)"
+      ]
+    },
+    {
+      "id": "method:dfbm:ProductQueryServiceImpl.queryLoanProducts",
+      "kind": "method",
+      "repo_id": "dfbm",
+      "path": "dfbm-fbs/src/main/java/com/wefi/dfbm/fbs/product/service/impl/ProductQueryServiceImpl.java",
+      "start_line": 114,
+      "end_line": 157,
+      "sha256": "4014540bd43c596290bbef2d9b03a7dfc4b61dc65e064a474b0a17a516675d0e",
+      "must_contain": [
+        "loanProductMapper.selectLoanProducts(dfpIds)",
+        "loanTermPlanMapper.selectByProductIds(productIds)",
+        "loanFeeRuleMapper.selectByProductIds(productIds)",
+        "loanUsageConfigMapper.selectByProductIds(productIds)",
+        "loanApplicabilityRuleMapper.selectByProductIds(productIds)",
+        "loanRecommendRuleMapper.selectByProductIds(productIds)",
+        "loanProductBankMappingMapper.selectByDfpIds(hitDfpIds)"
+      ]
+    }
+  ],
+  "expected_confirmed_edges": [
+    {
+      "from": "endpoint:dfbm:queryLoanProducts",
+      "to": "method:dfbm:LoanInternalController.queryLoanProducts",
+      "kind": "IMPLEMENTED_BY",
+      "classification": "confirmed_static"
+    },
+    {
+      "from": "method:dfbm:LoanInternalController.queryLoanProducts",
+      "to": "method:dfbm:ProductQueryServiceImpl.queryLoanProducts",
+      "kind": "CALLS",
+      "classification": "confirmed_static"
+    }
+  ],
+  "expected_tables": [
+    "financial_product",
+    "loan_product",
+    "loan_product_term_plan",
+    "loan_product_fee_rule",
+    "loan_product_usage_config",
+    "loan_product_applicability_rule",
+    "loan_product_recommendation_rule",
+    "loan_product_bank_mapping"
+  ],
+  "expected_mapper_evidence": [
+    "dfbm-fbs/src/main/resources/mapper/LoanProductMapper.xml",
+    "dfbm-fbs/src/main/resources/mapper/LoanTermPlanMapper.xml",
+    "dfbm-fbs/src/main/resources/mapper/LoanFeeRuleMapper.xml",
+    "dfbm-fbs/src/main/resources/mapper/LoanUsageConfigMapper.xml",
+    "dfbm-fbs/src/main/resources/mapper/LoanApplicabilityRuleMapper.xml",
+    "dfbm-fbs/src/main/resources/mapper/LoanRecommendRuleMapper.xml",
+    "dfbm-fbs/src/main/resources/mapper/LoanProductBankMappingMapper.xml"
+  ],
+  "scoped_absences": [
+    {
+      "scope": "dfbm/dfbm-fbs/src/main/java/com/wefi/dfbm/fbs/product",
+      "repo_id": "dfbm",
+      "relative_root": "dfbm-fbs/src/main/java/com/wefi/dfbm/fbs/product",
+      "file_suffixes": [".java"],
+      "forbidden_literals": ["RestTemplate", "WebClient", "FeignClient", "BasClient", "DcisClient", "FineractClient"],
+      "observation": "No outbound Client/SAO/RestTemplate/WebClient/Feign call was found for this flow",
+      "required_wording": "在固定 commit 和已扫描产品域源码中未发现远程下游调用"
+    },
+    {
+      "scope": "dcis/dcis-mis/src/main",
+      "repo_id": "dcis",
+      "relative_root": "dcis-mis/src/main",
+      "file_suffixes": [".java", ".xml", ".yaml", ".yml"],
+      "forbidden_literals": ["01100121", "/internal/v1/loan-products", "/dfbm-fbs/v1/loan-products"],
+      "observation": "No 01100121, old route, or current DFBM route source hit",
+      "required_wording": "在固定 commit 和该源码范围内未发现对应实现或路由"
+    },
+    {
+      "scope": "fineract/*/src/main",
+      "repo_id": "fineract",
+      "relative_root": ".",
+      "file_suffixes": [".java", ".xml", ".yaml", ".yml"],
+      "forbidden_literals": ["01100121", "/internal/v1/loan-products", "/dfbm-fbs/v1/loan-products"],
+      "observation": "No 01100121, old route, or current DFBM route source hit",
+      "required_wording": "在固定 commit 和该源码范围内未发现该上游编号或路由"
+    }
+  ],
+  "forbidden_confirmed_claims": [
+    "01100121 is currently GET /internal/v1/loan-products",
+    "01100121 currently calls DCIS",
+    "01100121 currently calls Fineract",
+    "Fineract data is fetched synchronously by this request",
+    "The pending-review knowledge document proves production deployment"
+  ],
+  "knowledge_evidence": [
+    {
+      "repo_id": "bank_knowledge",
+      "path": "02_knowledge/03_接口/01100121_贷款产品查询接口说明_2026-09-29.md",
+      "start_line": 1,
+      "end_line": 66,
+      "document_status": "待审核；代码观察 + dev 实测",
+      "relation_to_current_code": "aligned_committed_update",
+      "worktree_state": "committed",
+      "sha256": "d24483891b07d8b8f7bdbd195a751a6490b1acc83f8fb93b4e003030c4e99754",
+      "must_contain": [
+        "POST /dfbm-fbs/v1/loan-products",
+        "请求体 schema 为 `LoanProductQueryRequest`",
+        "`dfpIdList` | body | 否",
+        "下游依赖 | **无**"
+      ]
+    }
+  ],
+  "known_conflicts": [],
+  "resolved_conflicts": [
+    {
+      "field": "http_contract",
+      "knowledge_value": "POST /dfbm-fbs/v1/loan-products with optional LoanProductQueryRequest body",
+      "current_code_value": "POST /dfbm-fbs/v1/loan-products with optional LoanProductQueryRequest body",
+      "classification": "resolved_by_current_code"
+    }
+  ],
+  "acceptance": {
+    "interface_top_k": 1,
+    "confirmed_edge_precision": 1.0,
+    "required_fact_citation_rate": 1.0,
+    "hallucinated_confirmed_claims": 0,
+    "must_report_snapshot_ids": true,
+    "must_report_scoped_absence_limitations": true
+  }
+}

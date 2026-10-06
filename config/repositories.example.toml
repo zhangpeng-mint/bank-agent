@@ -1,0 +1,111 @@
+schema_version = 1
+captured_at = "2026-09-30T00:00:00+08:00"
+access_mode = "read_only"
+allow_arbitrary_paths = false
+follow_symlinks = false
+index_untracked_files = false
+
+[safety]
+allowed_operations = ["stat", "read", "search", "git_read"]
+denied_operations = ["write", "delete", "execute_project_code", "connect_database", "call_project_service", "push"]
+secrets_policy = "metadata_only_unless_explicitly_allowlisted"
+
+[[repositories]]
+id = "dfbm"
+display_name = "MINT DFBM"
+role = "channel_business_system"
+kind = "java_source"
+root = "C:/bank/repos/dfbm"
+origin = "git@github.com:WeFi-Mint/mint-dfbm.git"
+baseline_branch = "master"
+baseline_commit = "44f59fabb2235f612fc470b49b18a0d551a9b995"
+upstream = "origin/master"
+worktree_policy = "record_and_continue_without_modifying"
+preexisting_changes = []
+include = [
+  "**/*.java",
+  "**/*.xml",
+  "**/*.yaml",
+  "**/*.yml",
+  "**/*.gradle",
+  "**/*.gradle.kts",
+  "**/*.md",
+]
+exclude = [".git/**", ".gradle/**", "**/build/**", "**/out/**", "**/.idea/**"]
+
+[[repositories]]
+id = "dcis"
+display_name = "DCP DCIS"
+role = "core_adapter_layer"
+kind = "java_source"
+root = "C:/bank/repos/dcis"
+origin = "git@github.com:WeFi-Mint/dcp-dcis.git"
+baseline_branch = "main"
+baseline_commit = "350fbdae3506f79bc1a1cf99afeb7f32680db415"
+upstream = "origin/main"
+worktree_policy = "record_and_continue_without_modifying"
+preexisting_changes = []
+include = [
+  "**/*.java",
+  "**/*.xml",
+  "**/*.yaml",
+  "**/*.yml",
+  "**/*.gradle",
+  "**/*.gradle.kts",
+  "**/*.md",
+]
+exclude = [".git/**", ".gradle/**", "**/build/**", "**/out/**", "**/.idea/**"]
+
+[[repositories]]
+id = "fineract"
+display_name = "DCP Fineract"
+role = "core_banking_system"
+kind = "java_source"
+root = "C:/bank/repos/fineract"
+origin = "git@github.com:WeFi-Mint/dcp-fineract.git"
+baseline_branch = "1.15.0"
+baseline_commit = "d5636847ac556c30b437254c353f05526d172b97"
+upstream = "origin/1.15.0"
+worktree_policy = "record_and_continue_without_modifying"
+preexisting_changes = []
+include = [
+  "fineract-provider/src/main/**/*.java",
+  "fineract-core/src/main/**/*.java",
+  "fineract-loan/src/main/**/*.java",
+  "fineract-savings/src/main/**/*.java",
+  "fineract-security/src/main/**/*.java",
+  "fineract-*/src/main/resources/**/*.xml",
+  "fineract-*/src/main/resources/**/*.yaml",
+  "fineract-*/src/main/resources/**/*.yml",
+  "build.gradle",
+  "settings.gradle",
+  "fineract-*/build.gradle",
+]
+exclude = [
+  ".git/**",
+  ".gradle/**",
+  "**/build/**",
+  "**/out/**",
+  "**/.idea/**",
+  "integration-tests/**",
+  "fineract-e2e-tests-*/**",
+]
+
+[[repositories]]
+id = "bank_knowledge"
+display_name = "Bank Knowledge"
+role = "authorized_knowledge_base"
+kind = "git_markdown"
+root = "C:/bank/repos/bank-knowledge"
+content_root = "C:/bank/repos/bank-knowledge/02_knowledge"
+origin = "git@github.com:zhangpeng-mint/bank-knowledge.git"
+baseline_branch = "main"
+baseline_commit = "f2cfbada05011c0d0f15f607feb4826d254b2526"
+upstream = "origin/main"
+worktree_policy = "record_and_continue_without_modifying"
+preexisting_changes = []
+include = ["02_knowledge/**/*.md", "02_knowledge/**/*.txt"]
+exclude = ["00_inbox/**", "01_sources/**"]
+demo_paths = ["02_knowledge/99_演示/**"]
+demo_authority = "never_use_as_real_business_evidence"
+query_command = ["python3", "tools/kb.py"]
