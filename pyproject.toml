@@ -9,7 +9,9 @@ dependencies = []
 [project.scripts]
 bankdev = "bankdev_agent.cli:main"
 
+[tool.setuptools.package-data]
+bankdev_agent = ["web_static/*.html", "web_static/*.css", "web_static/*.js"]
+
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 testpaths = ["tests"]
-

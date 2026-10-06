@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>BankDev Agent · 研发分析工作台</title>
+  <link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="#overview"><span class="brand-mark">B<span>·</span></span><span>BankDev<span class="brand-sub">AGENT WORKSPACE</span></span></a>
+    <div class="workspace"><span class="workspace-icon">M</span><div>MINT 银行业务<span>本地研发空间</span></div><span class="workspace-dot"></span></div>
+    <div class="nav-label">工作台</div>
+    <nav aria-label="功能导航">
+      <a href="#overview" data-page="overview"><span class="nav-icon">◫</span>概览</a>
+      <a href="#analysis" data-page="analysis"><span class="nav-icon">✧</span>需求分析<span class="nav-tag">核心</span></a>
+      <a href="#search" data-page="search"><span class="nav-icon">⌕</span>知识与代码</a>
+      <a href="#trace" data-page="trace"><span class="nav-icon">⑂</span>调用链与影响</a>
+      <a href="#conflicts" data-page="conflicts"><span class="nav-icon">⇄</span>契约与冲突</a>
+      <a href="#repositories" data-page="repositories"><span class="nav-icon">▤</span>仓库与索引</a>
+    </nav>
+    <div class="sidebar-bottom"><div class="local-badge"><i></i>本地运行 · 只读分析</div><p>让每一个结论<br>都有据可查。</p><span class="version">BANKDEV / WEB MVP</span></div>
+  </aside>
+  <div class="app-shell">
+    <header class="topbar"><div><span class="breadcrumb">工作台</span><span class="slash">/</span><span id="page-label">概览</span></div><div class="top-right"><span class="connection"><i></i><span id="connection-label">连接中</span></span><span class="avatar">本</span></div></header>
+    <main id="main" tabindex="-1"></main>
+    <footer>基于固定源码与知识快照的静态分析<span>业务仓库只读 · 证据优先 · 模型建议需复核</span></footer>
+  </div>
+  <div id="taskbar" class="taskbar hidden" role="status" aria-live="polite"></div>
+  <div id="toast" class="toast hidden" role="alert"></div>
+  <dialog id="evidence-dialog"><div class="dialog-header"><div><span class="eyebrow">EVIDENCE VIEWER</span><h2>证据预览</h2></div><button id="close-evidence" class="icon-button" aria-label="关闭证据预览">×</button></div><div id="evidence-content"></div></dialog>
+</body>
+</html>

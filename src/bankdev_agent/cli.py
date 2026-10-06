@@ -38,6 +38,9 @@ def _parser() -> argparse.ArgumentParser:
     subcommands = parser.add_subparsers(dest="command", required=True)
 
     subcommands.add_parser("check-config", help="Parse and validate the read-only configuration")
+    web = subcommands.add_parser("web", help="Start the loopback-only visual workbench")
+    web.add_argument("--port", type=int, default=8765)
+    web.add_argument("--db", type=Path, default=DEFAULT_INDEX)
 
     requirement = subcommands.add_parser("analyze-requirement", help="Run deterministic requirement analysis and evidence gates")
     requirement.add_argument("text", help="Requirement goal; eight-digit interface ids are extracted literally")
@@ -145,6 +148,10 @@ def main(argv: list[str] | None = None) -> None:
     args = _parser().parse_args(argv)
     try:
         config = load_project_config(args.config)
+        if args.command == "web":
+            from bankdev_agent.web import serve
+            serve(config, _index_path(config, args.db), args.port)
+            return
         if args.command == "check-config":
             payload, ok = _check_config(config)
         elif args.command == "model-smoke":
