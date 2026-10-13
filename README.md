@@ -4,6 +4,8 @@
 
 ## Web 工作台
 
+阶段 8 新增真实需求案例回放：`analyze-case tests/cases/unified-loan-orders.json --build-index`（同样使用 `PYTHONPATH=src python3 -m bankdev_agent` 前缀）。案例固定四仓版本、单独写入 `var/cases/`，不覆盖原索引或配置。首例是 DFBM 统一订单与放款/还款明细的差距分析，尚未修改业务实现。详见 [阶段 8](docs/baseline/12-phase8-real-requirement.md) 和 [需求分析稿](docs/requirements/unified-loan-orders.md)。
+
 在项目根目录完成本机仓库配置后启动：
 
 ```bash

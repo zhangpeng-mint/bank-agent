@@ -42,6 +42,15 @@ def _parser() -> argparse.ArgumentParser:
     web.add_argument("--port", type=int, default=8765)
     web.add_argument("--db", type=Path, default=DEFAULT_INDEX)
 
+    case = subcommands.add_parser("analyze-case", help="Replay a requirement file against explicitly pinned snapshots")
+    case.add_argument("case", type=Path)
+    case.add_argument("--build-index", action="store_true", help="Build a separate case index under var/cases/")
+    case.add_argument("--db", type=Path)
+    case.add_argument("--max-depth", type=int, default=8)
+    case.add_argument("--max-nodes", type=int, default=200)
+    case.add_argument("--format", choices=("json", "markdown"), default="json")
+    case.add_argument("--output", type=Path)
+
     requirement = subcommands.add_parser("analyze-requirement", help="Run deterministic requirement analysis and evidence gates")
     requirement.add_argument("text", help="Requirement goal; eight-digit interface ids are extracted literally")
     for option, dest in (("non-goal", "non_goals"), ("business-object", "business_objects"),
@@ -160,6 +169,18 @@ def main(argv: list[str] | None = None) -> None:
             ok = payload["ok"]
             if args.output:
                 _write_analysis_output(config, args.output, json.dumps(payload, ensure_ascii=False, indent=2))
+        elif args.command == "analyze-case":
+            from bankdev_agent.requirement_case import analyze_case, render_case_markdown
+            payload = analyze_case(config, args.case, args.db, build_index=args.build_index,
+                                   max_depth=args.max_depth, max_nodes=args.max_nodes)
+            rendered = (json.dumps(payload, ensure_ascii=False, indent=2) if args.format == "json"
+                        else render_case_markdown(payload))
+            if args.output:
+                _write_analysis_output(config, args.output, rendered)
+            print(rendered)
+            if not payload["ok"]:
+                raise SystemExit(1)
+            return
         elif args.command == "analyze-requirement":
             frame = RequirementFrame.parse(args.text, **{name: getattr(args, name) for name in (
                 "non_goals", "business_objects", "interface_ids", "terms", "constraints",
