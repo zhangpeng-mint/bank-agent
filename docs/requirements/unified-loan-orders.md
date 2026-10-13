@@ -1,5 +1,7 @@
 # 统一订单与放款/还款明细：阶段 8 分析稿
 
+> 更新说明（2026-10-13）：用户已收敛本轮范围为仅设计借款明细，公共订单沿用现状、不评审。最新借款明细设计见 [简版设计 v1](loan-disbursement-detail-v1.md)，基于 DFBM `2b1b7f2`。本页保留旧 snapshot 的历史分析，不代表当前源码仍有下述全部差距。
+
 2026-10-13；状态：待业务和研发评审；只读代码观察 + 设计建议。版本清单见 `docs/baseline/12-phase8-real-requirement.md`，机器报告在 `var/reports/phase8-unified-loan-orders.json`。没有运行金融交易、数据库或业务测试。
 
 ## 1. 已确认范围
